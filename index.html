@@ -17,39 +17,36 @@ html,body{background:#000;font-family:-apple-system,BlinkMacSystemFont,"SF Pro D
 #hdr-add:active{background:rgba(255,255,255,0.18);}
 
 #art-wrap{padding:0 28px;margin-bottom:28px;}
-#art{width:100%;aspect-ratio:1;border-radius:18px;background:#111;position:relative;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.8);}
-canvas{position:absolute;inset:0;width:100%;height:100%;}
+#art{width:100%;aspect-ratio:1;border-radius:18px;background:#111;position:relative;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;}
 #art-idle{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;}
 #art-idle svg{width:50px;height:50px;stroke:rgba(255,255,255,0.18);stroke-width:1.2;}
 #art-idle span{font-size:13px;color:rgba(255,255,255,0.22);letter-spacing:0.03em;}
-#art-overlay{position:absolute;bottom:0;left:0;right:0;padding:18px 16px 14px;background:linear-gradient(transparent,rgba(0,0,0,0.75));display:none;}
-#art-fn{font-size:13px;font-weight:500;color:rgba(255,255,255,0.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-#art-fm{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;}
-
-#info{padding:0 28px;margin-bottom:20px;display:none;}
-#info-name{font-size:21px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;}
-#info-meta{font-size:13px;color:rgba(255,255,255,0.35);}
+#art-active{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+#art-fn{font-size:15px;font-weight:600;color:#fff;text-align:center;margin-bottom:8px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
+#art-fm{font-size:12px;color:rgba(255,255,255,0.35);text-align:center;}
+#art-pulse{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
+#art-pulse svg{width:28px;height:28px;stroke:rgba(255,255,255,0.4);}
 
 #seek-wrap{padding:0 28px;margin-bottom:6px;display:none;}
 #seek{width:100%;height:4px;appearance:none;-webkit-appearance:none;border-radius:2px;border:none;outline:none;cursor:pointer;background:rgba(255,255,255,0.12);}
 #seek::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;cursor:pointer;}
 
-#times{display:none;justify-content:space-between;padding:0 28px;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.02em;margin-bottom:28px;}
+#times{display:none;justify-content:space-between;padding:0 28px;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.02em;margin-bottom:32px;}
 
-#ctrls{display:none;align-items:center;justify-content:space-around;padding:0 28px;margin-bottom:28px;}
-.cc{background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:12px;border-radius:50%;}
+#ctrls{display:none;align-items:center;justify-content:space-around;padding:0 28px;margin-bottom:32px;}
+.cc{background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:12px;border-radius:50%;-webkit-appearance:none;}
 .cc:active{opacity:0.4;}
-.cc svg{stroke:rgba(255,255,255,0.5);}
-#play-cc{width:72px;height:72px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;flex-shrink:0;-webkit-appearance:none;appearance:none;}
-#play-cc:active{transform:scale(0.93);}
-#play-cc svg{width:32px;height:32px;display:block;}
+.cc svg{stroke:rgba(255,255,255,0.45);}
+#play-cc{width:72px;height:72px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;flex-shrink:0;-webkit-appearance:none;appearance:none;position:relative;z-index:10;}
+#play-cc:active{transform:scale(0.93);background:rgba(255,255,255,0.88);}
+#play-cc svg{width:30px;height:30px;display:block;pointer-events:none;}
 
-#bot-row{display:none;align-items:center;gap:14px;padding:0 28px;margin-bottom:24px;}
+#bot-row{display:none;align-items:center;gap:14px;padding:0 28px;margin-bottom:28px;}
 #vol-wrap{flex:1;display:flex;align-items:center;gap:10px;}
 #vol-wrap svg{width:14px;height:14px;stroke:rgba(255,255,255,0.3);flex-shrink:0;}
 #vol{flex:1;height:3px;appearance:none;-webkit-appearance:none;border-radius:2px;border:none;outline:none;cursor:pointer;background:rgba(255,255,255,0.12);}
 #vol::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,0.5);cursor:pointer;}
-#spd-btn{background:rgba(255,255,255,0.08);border:none;border-radius:8px;padding:7px 13px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;letter-spacing:0.04em;white-space:nowrap;}
+#spd-btn{background:rgba(255,255,255,0.08);border:none;border-radius:8px;padding:7px 13px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;letter-spacing:0.04em;white-space:nowrap;-webkit-appearance:none;}
 #spd-btn:active{background:rgba(255,255,255,0.15);}
 
 #status{display:none;margin:0 28px 28px;background:rgba(255,255,255,0.04);border-radius:12px;padding:11px 14px;align-items:center;gap:9px;}
@@ -93,21 +90,18 @@ input[type=file]{display:none;}
 
   <div id="art-wrap">
     <div id="art">
-      <canvas id="wv"></canvas>
       <div id="art-idle" onclick="fi.click()">
         <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
         <span>Toca para abrir un audio</span>
       </div>
-      <div id="art-overlay">
+      <div id="art-active">
+        <div id="art-pulse">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
         <div id="art-fn"></div>
         <div id="art-fm"></div>
       </div>
     </div>
-  </div>
-
-  <div id="info">
-    <div id="info-name"></div>
-    <div id="info-meta"></div>
   </div>
 
   <div id="seek-wrap">
@@ -135,7 +129,7 @@ input[type=file]{display:none;}
       <input type="range" id="vol" min="0" max="1" step="0.02" value="1">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
     </div>
-    <button id="spd-btn" type="button" onclick="nextSpd()">1×</button>
+    <button id="spd-btn" type="button">1×</button>
   </div>
 
   <div id="status">
@@ -166,7 +160,6 @@ input[type=file]{display:none;}
 <input type="file" id="fi">
 
 <script>
-// Usamos FileReader para convertir a base64 — más compatible con Safari iOS
 const fi = document.getElementById('fi');
 const seekEl = document.getElementById('seek');
 const ctEl = document.getElementById('ct');
@@ -178,18 +171,15 @@ const libEmpty = document.getElementById('lib-empty');
 const sdot = document.getElementById('sdot');
 const stxt = document.getElementById('stxt');
 const spdBtn = document.getElementById('spd-btn');
-const canvas = document.getElementById('wv');
 const playBtn = document.getElementById('play-cc');
 
-// Creamos el audio por JS, no en HTML
 const aud = new Audio();
-aud.preload = 'auto';
 
 const PLAY = '<polygon points="6 3 20 12 6 21 6 3" fill="#000" stroke="none"/>';
 const PAUSE = '<rect x="5" y="3" width="4" height="18" rx="1" fill="#000"/><rect x="15" y="3" width="4" height="18" rx="1" fill="#000"/>';
 const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
-let si = 2, key = null, seeking = false, saveT = null, wctx = null, animId = null;
-const DB = '_apm7';
+let si = 2, key = null, seeking = false, saveT = null, objUrl = null;
+const DB = '_apm8';
 let db = {};
 
 function loadDB() { try { db = JSON.parse(localStorage.getItem(DB) || '{}') } catch(e) { db = {} } }
@@ -202,77 +192,25 @@ function fmt(s) {
 }
 function setStatus(msg, on) { stxt.textContent = msg; sdot.className = on ? 'on' : ''; }
 function flex(id) { document.getElementById(id).style.display = 'flex'; }
-function nextSpd() { si = (si+1) % SPEEDS.length; aud.playbackRate = SPEEDS[si]; spdBtn.textContent = SPEEDS[si]+'×'; }
 
-// Play button — listener directo, sin onclick
-playBtn.addEventListener('touchend', function(e) {
-  e.preventDefault();
+spdBtn.addEventListener('click', () => {
+  si = (si+1) % SPEEDS.length;
+  aud.playbackRate = SPEEDS[si];
+  spdBtn.textContent = SPEEDS[si]+'×';
+});
+
+// Play — touchend para iOS, click como fallback
+function doPlay() {
+  if (!aud.src) return;
   if (aud.paused) {
-    aud.play().catch(err => setStatus('Error: ' + err.message, false));
+    const p = aud.play();
+    if (p) p.catch(err => setStatus('Error: ' + err.message, false));
   } else {
     aud.pause();
   }
-});
-playBtn.addEventListener('click', function() {
-  if (aud.paused) {
-    aud.play().catch(err => setStatus('Error: ' + err.message, false));
-  } else {
-    aud.pause();
-  }
-});
-
-// Waveform
-function drawWave() {
-  if (!wctx) { animId = requestAnimationFrame(drawWave); return; }
-  if (document.hidden) { animId = requestAnimationFrame(drawWave); return; }
-  const w = canvas.width, h = canvas.height, t = aud.currentTime||0, dur = aud.duration||1;
-  wctx.clearRect(0,0,w,h);
-  const bars = 58, gap = 2, bw = Math.floor((w-(bars-1)*gap)/bars);
-  for (let i = 0; i < bars; i++) {
-    const frac = i/bars, played = frac < t/dur;
-    const amp = Math.abs(Math.sin(frac*Math.PI*9+t*1.4))*0.42 + Math.abs(Math.sin(frac*Math.PI*3.7-t*0.9))*0.28 + 0.1;
-    const bh = Math.max(3, h*Math.min(amp,0.88));
-    const x = i*(bw+gap), y = (h-bh)/2;
-    wctx.fillStyle = played ? 'rgba(255,255,255,0.78)' : 'rgba(255,255,255,0.11)';
-    wctx.beginPath();
-    if (wctx.roundRect) wctx.roundRect(x,y,bw,bh,1.5); else wctx.rect(x,y,bw,bh);
-    wctx.fill();
-  }
-  animId = requestAnimationFrame(drawWave);
 }
-function initCanvas() {
-  const pr = window.devicePixelRatio||1;
-  const art = document.getElementById('art');
-  const w = art.offsetWidth, h = art.offsetHeight;
-  canvas.width = w*pr; canvas.height = h*pr;
-  canvas.style.width = w+'px'; canvas.style.height = h+'px';
-  wctx = canvas.getContext('2d');
-  wctx.scale(pr,pr);
-}
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && wctx) { cancelAnimationFrame(animId); drawWave(); }
-});
-
-function renderLib() {
-  const keys = Object.keys(db).filter(k => db[k].dur > 0 || db[k].pos > 2);
-  libEmpty.style.display = keys.length ? 'none' : 'block';
-  libList.querySelectorAll('.lrow').forEach(r => r.remove());
-  keys.sort((a,b) => (db[b].updated||0)-(db[a].updated||0)).forEach(k => {
-    const it = db[k];
-    const pct = it.dur ? Math.min(100, Math.round(it.pos/it.dur*100)) : 0;
-    const d = document.createElement('div');
-    d.className = 'lrow';
-    d.innerHTML = `<div class="lthumb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><div class="linfo"><div class="lname">${it.name.replace(/\.[^/.]+$/,'')}</div><div class="lpos">${fmt(it.pos)} / ${fmt(it.dur)} · ${pct}%</div><div class="lpb"><div class="lpbf" style="width:${pct}%"></div></div></div>`;
-    d.onclick = () => setStatus('Abre el archivo para retomar en '+fmt(it.pos), false);
-    libList.appendChild(d);
-  });
-}
-
-function savePos() {
-  if (!key || !aud.duration) return;
-  db[key].pos = aud.currentTime; db[key].dur = aud.duration; db[key].updated = Date.now();
-  saveDB(); setStatus('Guardado en '+fmt(aud.currentTime), true); renderLib();
-}
+playBtn.addEventListener('touchend', e => { e.preventDefault(); doPlay(); });
+playBtn.addEventListener('click', doPlay);
 
 aud.addEventListener('timeupdate', () => {
   if (seeking) return;
@@ -284,18 +222,17 @@ aud.addEventListener('loadedmetadata', () => {
   ttEl.textContent = fmt(aud.duration);
   seekEl.max = Math.floor(aud.duration);
   const sp = db[key] && db[key].pos > 2 ? db[key].pos : 0;
-  if (sp) { aud.currentTime = sp; setStatus('Retomando desde '+fmt(sp), true); }
+  if (sp) { aud.currentTime = sp; setStatus('Retomando desde ' + fmt(sp), true); }
   else setStatus('Listo — toca play', true);
-  setTimeout(() => { initCanvas(); cancelAnimationFrame(animId); drawWave(); }, 100);
 });
 aud.addEventListener('play', () => { playSvg.innerHTML = PAUSE; setStatus('Reproduciendo', true); });
-aud.addEventListener('pause', () => { playSvg.innerHTML = PLAY; savePos(); setStatus('Pausado en '+fmt(aud.currentTime), false); });
+aud.addEventListener('pause', () => { playSvg.innerHTML = PLAY; savePos(); setStatus('Pausado en ' + fmt(aud.currentTime), false); });
 aud.addEventListener('ended', () => {
   playSvg.innerHTML = PLAY;
   if (key) { db[key].pos = 0; saveDB(); }
   setStatus('Terminado', false); renderLib();
 });
-aud.addEventListener('error', () => { setStatus('Error al cargar el audio', false); });
+aud.addEventListener('error', () => setStatus('Error al cargar el audio', false));
 
 seekEl.addEventListener('mousedown', () => seeking = true);
 seekEl.addEventListener('touchstart', () => seeking = true, {passive:true});
@@ -306,34 +243,47 @@ document.getElementById('btn-r30').addEventListener('click', () => { aud.current
 document.getElementById('btn-f30').addEventListener('click', () => { aud.currentTime = Math.min(aud.duration||0, aud.currentTime+30); savePos(); });
 volEl.addEventListener('input', () => { aud.volume = parseFloat(volEl.value); });
 
+function savePos() {
+  if (!key || !aud.duration) return;
+  db[key].pos = aud.currentTime; db[key].dur = aud.duration; db[key].updated = Date.now();
+  saveDB(); setStatus('Guardado en ' + fmt(aud.currentTime), true); renderLib();
+}
+
+function renderLib() {
+  const keys = Object.keys(db).filter(k => db[k].dur > 0 || db[k].pos > 2);
+  libEmpty.style.display = keys.length ? 'none' : 'block';
+  libList.querySelectorAll('.lrow').forEach(r => r.remove());
+  keys.sort((a,b) => (db[b].updated||0)-(db[a].updated||0)).forEach(k => {
+    const it = db[k];
+    const pct = it.dur ? Math.min(100, Math.round(it.pos/it.dur*100)) : 0;
+    const d = document.createElement('div');
+    d.className = 'lrow';
+    d.innerHTML = `<div class="lthumb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><div class="linfo"><div class="lname">${it.name.replace(/\.[^/.]+$/,'')}</div><div class="lpos">${fmt(it.pos)} / ${fmt(it.dur)} · ${pct}%</div><div class="lpb"><div class="lpbf" style="width:${pct}%"></div></div></div>`;
+    d.onclick = () => setStatus('Abre el archivo para retomar en ' + fmt(it.pos), false);
+    libList.appendChild(d);
+  });
+}
+
 fi.addEventListener('change', e => {
   const f = e.target.files[0]; if (!f) return;
-  cancelAnimationFrame(animId);
   key = f.name + '_' + f.size;
-  if (!db[key]) db[key] = {name:f.name, pos:0, dur:0, updated:Date.now()};
+  if (!db[key]) db[key] = {name: f.name, pos: 0, dur: 0, updated: Date.now()};
 
-  setStatus('Cargando...', false);
-
-  // FileReader para máxima compatibilidad con Safari iOS
-  const reader = new FileReader();
-  reader.onload = function(ev) {
-    aud.src = ev.target.result;
-    aud.load();
-    aud.playbackRate = SPEEDS[si];
-  };
-  reader.readAsDataURL(f);
+  if (objUrl) URL.revokeObjectURL(objUrl);
+  objUrl = URL.createObjectURL(f);
+  aud.src = objUrl;
+  aud.load();
+  aud.playbackRate = SPEEDS[si];
 
   const short = f.name.replace(/\.[^/.]+$/, '');
-  document.getElementById('info-name').textContent = short;
-  document.getElementById('info-meta').textContent = (f.size/1024/1024).toFixed(1)+' MB · '+(f.type.split('/')[1]||'audio').toUpperCase();
   document.getElementById('art-fn').textContent = short;
-  document.getElementById('art-fm').textContent = (f.size/1024/1024).toFixed(1)+' MB';
+  document.getElementById('art-fm').textContent = (f.size/1024/1024).toFixed(1) + ' MB · ' + (f.type.split('/')[1] || 'audio').toUpperCase();
   document.getElementById('art-idle').style.display = 'none';
-  document.getElementById('art-overlay').style.display = 'block';
+  document.getElementById('art-active').style.display = 'flex';
   document.getElementById('open-btn').style.display = 'none';
-  document.getElementById('info').style.display = 'block';
   document.getElementById('seek-wrap').style.display = 'block';
   flex('times'); flex('ctrls'); flex('bot-row'); flex('status');
+  setStatus('Cargando...', false);
   renderLib();
 });
 
