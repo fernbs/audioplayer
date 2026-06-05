@@ -4,76 +4,113 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Player">
+<!-- Standard favicon -->
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+<!-- Apple Touch Icons (iOS home screen) -->
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="apple-touch-icon" sizes="120x120" href="icons/icon-120.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+<!-- Spotlight / notifications -->
+<link rel="apple-touch-icon" sizes="40x40" href="icons/icon-40.png">
+<link rel="apple-touch-icon" sizes="58x58" href="icons/icon-58.png">
+<link rel="apple-touch-icon" sizes="80x80" href="icons/icon-80.png">
+<link rel="apple-touch-icon" sizes="87x87" href="icons/icon-87.png">
+<!-- Settings icon -->
+<link rel="apple-touch-icon" sizes="29x29" href="icons/icon-29.png">
+<!-- Web app manifest -->
+<link rel="manifest" href="manifest.json">
 <title>Player</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{background:#000;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;color:#fff;min-height:100%;display:flex;justify-content:center;}
-#page{max-width:430px;width:100%;background:#000;padding:28px 0 60px;}
+#page{max-width:430px;width:100%;background:#000;}
 
+/* ── PAGE ── */
+#page{padding:28px 0 40px;}
+
+/* ── HEADER ── */
 #hdr{display:flex;align-items:center;justify-content:space-between;padding:0 24px 28px;}
 #hdr-title{font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);}
-#hdr-add{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.08);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-#hdr-add svg{width:15px;height:15px;stroke:#fff;opacity:.6;}
-#hdr-add:active{background:rgba(255,255,255,0.18);}
+#hdr-add{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.08);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+#hdr-add svg{width:14px;height:14px;stroke:#fff;opacity:.6;}
+#hdr-add:active{background:rgba(255,255,255,0.15);}
 
-#art-wrap{padding:0 28px;margin-bottom:28px;}
-#art{width:100%;aspect-ratio:1;border-radius:18px;background:#111;position:relative;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;}
+/* ── ART BLOCK ── */
+#art-wrap{padding:0 28px;margin-bottom:32px;}
+#art{width:100%;aspect-ratio:1;border-radius:16px;background:#111;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.8);}
+canvas{width:100%;height:100%;display:block;}
 #art-idle{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;}
-#art-idle svg{width:50px;height:50px;stroke:rgba(255,255,255,0.18);stroke-width:1.2;}
-#art-idle span{font-size:13px;color:rgba(255,255,255,0.22);letter-spacing:0.03em;}
-#art-active{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
-#art-fn{font-size:15px;font-weight:600;color:#fff;text-align:center;margin-bottom:8px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
-#art-fm{font-size:12px;color:rgba(255,255,255,0.35);text-align:center;}
-#art-pulse{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
-#art-pulse svg{width:28px;height:28px;stroke:rgba(255,255,255,0.4);}
+#art-idle svg{width:52px;height:52px;stroke:rgba(255,255,255,0.18);stroke-width:1.2;}
+#art-idle span{font-size:13px;color:rgba(255,255,255,0.22);letter-spacing:0.04em;}
+#art-overlay{position:absolute;bottom:0;left:0;right:0;padding:20px 18px 16px;background:linear-gradient(transparent,rgba(0,0,0,0.72));display:none;}
+#art-fn{font-size:13px;font-weight:500;color:rgba(255,255,255,0.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#art-fm{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;}
 
+/* ── TRACK INFO ── */
+#info{padding:0 28px;margin-bottom:24px;display:none;}
+#info-name{font-size:22px;font-weight:700;letter-spacing:-0.3px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px;}
+#info-meta{font-size:14px;color:rgba(255,255,255,0.38);}
+
+/* ── SEEK ── */
 #seek-wrap{padding:0 28px;margin-bottom:6px;display:none;}
-#seek{width:100%;height:4px;appearance:none;-webkit-appearance:none;border-radius:2px;border:none;outline:none;cursor:pointer;background:rgba(255,255,255,0.12);}
-#seek::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;cursor:pointer;}
+#seek{width:100%;height:3px;appearance:none;-webkit-appearance:none;border-radius:2px;border:none;outline:none;cursor:pointer;background:rgba(255,255,255,0.12);}
+#seek::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#fff;cursor:pointer;}
+#seek::-webkit-slider-runnable-track{border-radius:2px;}
+#times{display:flex;justify-content:space-between;padding:0 28px;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.02em;margin-bottom:28px;}
 
-#times{display:none;justify-content:space-between;padding:0 28px;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.02em;margin-bottom:32px;}
-
-#ctrls{display:none;align-items:center;justify-content:space-around;padding:0 28px;margin-bottom:32px;}
-.cc{background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:12px;border-radius:50%;-webkit-appearance:none;}
+/* ── CONTROLS ── */
+#ctrls{display:flex;align-items:center;justify-content:center;gap:0;padding:0 20px;margin-bottom:28px;display:none;}
+.cc{flex:1;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:8px;}
 .cc:active{opacity:0.4;}
-.cc svg{stroke:rgba(255,255,255,0.45);}
-#play-cc{width:72px;height:72px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;flex-shrink:0;-webkit-appearance:none;appearance:none;position:relative;z-index:10;}
-#play-cc:active{transform:scale(0.93);background:rgba(255,255,255,0.88);}
-#play-cc svg{width:30px;height:30px;display:block;pointer-events:none;}
+.cc svg{stroke:#fff;}
+.cc.dim svg{stroke:rgba(255,255,255,0.45);}
+#play-cc{flex:none;width:68px;height:68px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;}
+#play-cc:active{background:rgba(255,255,255,0.85);}
+#play-cc svg{width:28px;height:28px;stroke:#000;fill:#000;}
 
-#bot-row{display:none;align-items:center;gap:14px;padding:0 28px;margin-bottom:28px;}
+/* ── BOTTOM ROW ── */
+#bot-row{display:flex;align-items:center;gap:16px;padding:0 28px;margin-bottom:32px;display:none;}
 #vol-wrap{flex:1;display:flex;align-items:center;gap:10px;}
-#vol-wrap svg{width:14px;height:14px;stroke:rgba(255,255,255,0.3);flex-shrink:0;}
-#vol{flex:1;height:3px;appearance:none;-webkit-appearance:none;border-radius:2px;border:none;outline:none;cursor:pointer;background:rgba(255,255,255,0.12);}
-#vol::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,0.5);cursor:pointer;}
-#spd-btn{background:rgba(255,255,255,0.08);border:none;border-radius:8px;padding:7px 13px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;letter-spacing:0.04em;white-space:nowrap;-webkit-appearance:none;}
-#spd-btn:active{background:rgba(255,255,255,0.15);}
+#vol-wrap svg{width:14px;height:14px;stroke:rgba(255,255,255,0.35);flex-shrink:0;}
+#vol{flex:1;height:2px;appearance:none;-webkit-appearance:none;border-radius:2px;border:none;outline:none;cursor:pointer;background:rgba(255,255,255,0.12);}
+#vol::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.5);cursor:pointer;}
+#spd-btn{background:rgba(255,255,255,0.08);border:none;border-radius:8px;padding:6px 11px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;letter-spacing:0.04em;}
+#spd-btn:active{background:rgba(255,255,255,0.14);}
 
-#status{display:none;margin:0 28px 28px;background:rgba(255,255,255,0.04);border-radius:12px;padding:11px 14px;align-items:center;gap:9px;}
-#sdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.18);flex-shrink:0;transition:background .3s;}
+/* ── STATUS ── */
+#status{margin:0 28px 32px;background:rgba(255,255,255,0.05);border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:9px;display:none;}
+#sdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0;transition:background .3s;}
 #sdot.on{background:#1DB954;}
-#stxt{font-size:12px;color:rgba(255,255,255,0.3);}
+#stxt{font-size:12px;color:rgba(255,255,255,0.35);}
 
-#open-btn{margin:0 28px 32px;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.08);border-radius:14px;padding:18px;display:flex;align-items:center;gap:14px;cursor:pointer;}
+/* ── OPEN BTN (when no file) ── */
+#open-btn{margin:0 28px 36px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px;display:flex;align-items:center;gap:14px;cursor:pointer;}
 #open-btn:active{background:rgba(255,255,255,0.1);}
-#open-btn svg{width:22px;height:22px;stroke:rgba(255,255,255,0.35);flex-shrink:0;}
-.ob-t1{font-size:15px;font-weight:500;color:#fff;margin-bottom:2px;}
-.ob-t2{font-size:12px;color:rgba(255,255,255,0.28);letter-spacing:0.02em;}
+#open-btn svg{width:24px;height:24px;stroke:rgba(255,255,255,0.4);flex-shrink:0;}
+#open-btn-text .t1{font-size:15px;font-weight:500;color:#fff;margin-bottom:2px;}
+#open-btn-text .t2{font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:0.02em;}
 
+/* ── LIBRARY ── */
 #lib{padding:0 28px;}
-#lib-hdr{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-bottom:14px;}
-#lib-empty{padding:16px 0 8px;text-align:center;}
-#lib-empty svg{width:26px;height:26px;stroke:rgba(255,255,255,0.13);margin:0 auto 10px;display:block;}
-#lib-empty p{font-size:13px;color:rgba(255,255,255,0.18);}
+#lib-hdr{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:16px;}
+#lib-list{}
+#lib-empty{padding:20px 0 8px;text-align:center;}
+#lib-empty svg{width:28px;height:28px;stroke:rgba(255,255,255,0.15);margin:0 auto 10px;display:block;}
+#lib-empty p{font-size:13px;color:rgba(255,255,255,0.2);}
 .lrow{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid rgba(255,255,255,0.06);cursor:pointer;}
-.lrow:active{opacity:0.5;}
-.lthumb{width:42px;height:42px;border-radius:10px;background:#111;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.lthumb svg{width:17px;height:17px;stroke:rgba(255,255,255,0.28);}
+.lrow:active{opacity:0.6;}
+.lthumb{width:44px;height:44px;border-radius:10px;background:#111;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.lthumb svg{width:18px;height:18px;stroke:rgba(255,255,255,0.3);}
 .linfo{flex:1;min-width:0;}
 .lname{font-size:14px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.lpos{font-size:11px;color:rgba(255,255,255,0.28);margin-top:2px;}
-.lpb{height:2px;background:rgba(255,255,255,0.07);border-radius:1px;margin-top:6px;}
-.lpbf{height:100%;background:rgba(255,255,255,0.28);border-radius:1px;}
+.lpos{font-size:12px;color:rgba(255,255,255,0.3);margin-top:2px;}
+.lpb{height:2px;background:rgba(255,255,255,0.08);border-radius:1px;margin-top:7px;}
+.lpbf{height:100%;background:rgba(255,255,255,0.3);border-radius:1px;}
 
 input[type=file]{display:none;}
 </style>
@@ -90,18 +127,21 @@ input[type=file]{display:none;}
 
   <div id="art-wrap">
     <div id="art">
+      <canvas id="wv"></canvas>
       <div id="art-idle" onclick="fi.click()">
         <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
         <span>Toca para abrir un audio</span>
       </div>
-      <div id="art-active">
-        <div id="art-pulse">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        </div>
+      <div id="art-overlay">
         <div id="art-fn"></div>
         <div id="art-fm"></div>
       </div>
     </div>
+  </div>
+
+  <div id="info">
+    <div id="info-name"></div>
+    <div id="info-meta"></div>
   </div>
 
   <div id="seek-wrap">
@@ -110,16 +150,22 @@ input[type=file]{display:none;}
   <div id="times"><span id="ct">0:00</span><span id="tt">--:--</span></div>
 
   <div id="ctrls">
-    <button class="cc" id="btn-r30">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+    <button class="cc dim" id="btn-back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
     </button>
-    <button id="play-cc" type="button">
-      <svg id="play-svg" viewBox="0 0 24 24" fill="none">
-        <polygon points="6 3 20 12 6 21 6 3" fill="#000" stroke="none"/>
+    <button class="cc dim" id="btn-r30">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+    </button>
+    <button id="play-cc" onclick="togglePlay()">
+      <svg id="play-svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="5 3 19 12 5 21 5 3" fill="#000" stroke="#000"/>
       </svg>
     </button>
-    <button class="cc" id="btn-f30">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.49-3.51"/></svg>
+    <button class="cc dim" id="btn-f30">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.49-3.51"/></svg>
+    </button>
+    <button class="cc dim" id="btn-fwd">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="4" x2="19" y2="20"/></svg>
     </button>
   </div>
 
@@ -129,7 +175,7 @@ input[type=file]{display:none;}
       <input type="range" id="vol" min="0" max="1" step="0.02" value="1">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
     </div>
-    <button id="spd-btn" type="button">1×</button>
+    <button id="spd-btn" onclick="nextSpd()">1×</button>
   </div>
 
   <div id="status">
@@ -139,9 +185,9 @@ input[type=file]{display:none;}
 
   <div id="open-btn" onclick="fi.click()">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-    <div>
-      <div class="ob-t1">Abrir archivo de audio</div>
-      <div class="ob-t2">MP3 · WAV · M4A · FLAC · OGG</div>
+    <div id="open-btn-text">
+      <div class="t1">Abrir archivo de audio</div>
+      <div class="t2">MP3 · WAV · M4A · FLAC · OGG</div>
     </div>
   </div>
 
@@ -157,138 +203,139 @@ input[type=file]{display:none;}
 
 </div>
 
-<input type="file" id="fi">
+<input type="file" id="fi" accept="audio/*">
+<audio id="aud"></audio>
 
 <script>
-const fi = document.getElementById('fi');
-const seekEl = document.getElementById('seek');
-const ctEl = document.getElementById('ct');
-const ttEl = document.getElementById('tt');
-const volEl = document.getElementById('vol');
-const playSvg = document.getElementById('play-svg');
-const libList = document.getElementById('lib-list');
-const libEmpty = document.getElementById('lib-empty');
-const sdot = document.getElementById('sdot');
-const stxt = document.getElementById('stxt');
-const spdBtn = document.getElementById('spd-btn');
-const playBtn = document.getElementById('play-cc');
+const aud=document.getElementById('aud');
+const fi=document.getElementById('fi');
+const seekEl=document.getElementById('seek');
+const ctEl=document.getElementById('ct');
+const ttEl=document.getElementById('tt');
+const volEl=document.getElementById('vol');
+const playSvg=document.getElementById('play-svg');
+const libList=document.getElementById('lib-list');
+const libEmpty=document.getElementById('lib-empty');
+const sdot=document.getElementById('sdot');
+const stxt=document.getElementById('stxt');
+const spdBtn=document.getElementById('spd-btn');
+const canvas=document.getElementById('wv');
 
-const aud = new Audio();
+const PLAY='<polygon points="5 3 19 12 5 21 5 3" fill="#000" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+const PAUSE='<rect x="6" y="4" width="4" height="16" rx="1" fill="#000"/><rect x="14" y="4" width="4" height="16" rx="1" fill="#000"/>';
+const SPEEDS=[0.5,0.75,1,1.25,1.5,1.75,2];
+let si=2, key=null, seeking=false, saveT=null, wctx=null, animId=null;
+const DB='_apm5';
+let db={};
 
-const PLAY = '<polygon points="6 3 20 12 6 21 6 3" fill="#000" stroke="none"/>';
-const PAUSE = '<rect x="5" y="3" width="4" height="18" rx="1" fill="#000"/><rect x="15" y="3" width="4" height="18" rx="1" fill="#000"/>';
-const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
-let si = 2, key = null, seeking = false, saveT = null, objUrl = null;
-const DB = '_apm8';
-let db = {};
+function loadDB(){try{db=JSON.parse(localStorage.getItem(DB)||'{}')}catch(e){db={}}}
+function saveDB(){localStorage.setItem(DB,JSON.stringify(db))}
+function fmt(s){if(!s||isNaN(s))return'--:--';s=Math.floor(s);const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;return h?h+':'+String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0'):m+':'+String(sc).padStart(2,'0')}
+function setStatus(msg,on){stxt.textContent=msg;sdot.className=on?'on':'';}
+function show(id){document.getElementById(id).style.display='flex';}
+function nextSpd(){si=(si+1)%SPEEDS.length;aud.playbackRate=SPEEDS[si];spdBtn.textContent=SPEEDS[si]+'×';}
+function togglePlay(){aud.paused?aud.play():aud.pause();}
 
-function loadDB() { try { db = JSON.parse(localStorage.getItem(DB) || '{}') } catch(e) { db = {} } }
-function saveDB() { localStorage.setItem(DB, JSON.stringify(db)) }
-function fmt(s) {
-  if (!s || isNaN(s)) return '--:--';
-  s = Math.floor(s);
-  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sc = s%60;
-  return h ? h+':'+String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0') : m+':'+String(sc).padStart(2,'0');
-}
-function setStatus(msg, on) { stxt.textContent = msg; sdot.className = on ? 'on' : ''; }
-function flex(id) { document.getElementById(id).style.display = 'flex'; }
-
-spdBtn.addEventListener('click', () => {
-  si = (si+1) % SPEEDS.length;
-  aud.playbackRate = SPEEDS[si];
-  spdBtn.textContent = SPEEDS[si]+'×';
-});
-
-// Play — touchend para iOS, click como fallback
-function doPlay() {
-  if (!aud.src) return;
-  if (aud.paused) {
-    const p = aud.play();
-    if (p) p.catch(err => setStatus('Error: ' + err.message, false));
-  } else {
-    aud.pause();
+// waveform
+function drawWave(){
+  if(!wctx)return;
+  const w=canvas.width,h=canvas.height,t=aud.currentTime||0,dur=aud.duration||1;
+  wctx.clearRect(0,0,w,h);
+  const bars=60,gap=2,bw=Math.floor((w-(bars-1)*gap)/bars);
+  for(let i=0;i<bars;i++){
+    const frac=i/bars,played=frac<t/dur;
+    const amp=Math.abs(Math.sin(frac*Math.PI*9+t*1.4))*0.42+Math.abs(Math.sin(frac*Math.PI*3.7-t*0.9))*0.28+0.1;
+    const bh=Math.max(3,h*Math.min(amp,0.88));
+    const x=i*(bw+gap),y=(h-bh)/2;
+    wctx.fillStyle=played?'rgba(255,255,255,0.75)':'rgba(255,255,255,0.12)';
+    wctx.beginPath();
+    if(wctx.roundRect)wctx.roundRect(x,y,bw,bh,1.5);else wctx.rect(x,y,bw,bh);
+    wctx.fill();
   }
+  animId=requestAnimationFrame(drawWave);
 }
-playBtn.addEventListener('touchend', e => { e.preventDefault(); doPlay(); });
-playBtn.addEventListener('click', doPlay);
-
-aud.addEventListener('timeupdate', () => {
-  if (seeking) return;
-  ctEl.textContent = fmt(aud.currentTime);
-  if (aud.duration) { seekEl.max = Math.floor(aud.duration); seekEl.value = Math.floor(aud.currentTime); }
-  if (!saveT) saveT = setTimeout(() => { savePos(); saveT = null; }, 5000);
-});
-aud.addEventListener('loadedmetadata', () => {
-  ttEl.textContent = fmt(aud.duration);
-  seekEl.max = Math.floor(aud.duration);
-  const sp = db[key] && db[key].pos > 2 ? db[key].pos : 0;
-  if (sp) { aud.currentTime = sp; setStatus('Retomando desde ' + fmt(sp), true); }
-  else setStatus('Listo — toca play', true);
-});
-aud.addEventListener('play', () => { playSvg.innerHTML = PAUSE; setStatus('Reproduciendo', true); });
-aud.addEventListener('pause', () => { playSvg.innerHTML = PLAY; savePos(); setStatus('Pausado en ' + fmt(aud.currentTime), false); });
-aud.addEventListener('ended', () => {
-  playSvg.innerHTML = PLAY;
-  if (key) { db[key].pos = 0; saveDB(); }
-  setStatus('Terminado', false); renderLib();
-});
-aud.addEventListener('error', () => setStatus('Error al cargar el audio', false));
-
-seekEl.addEventListener('mousedown', () => seeking = true);
-seekEl.addEventListener('touchstart', () => seeking = true, {passive:true});
-seekEl.addEventListener('input', () => { ctEl.textContent = fmt(parseInt(seekEl.value)); });
-seekEl.addEventListener('change', () => { aud.currentTime = parseInt(seekEl.value); seeking = false; savePos(); });
-
-document.getElementById('btn-r30').addEventListener('click', () => { aud.currentTime = Math.max(0, aud.currentTime-30); savePos(); });
-document.getElementById('btn-f30').addEventListener('click', () => { aud.currentTime = Math.min(aud.duration||0, aud.currentTime+30); savePos(); });
-volEl.addEventListener('input', () => { aud.volume = parseFloat(volEl.value); });
-
-function savePos() {
-  if (!key || !aud.duration) return;
-  db[key].pos = aud.currentTime; db[key].dur = aud.duration; db[key].updated = Date.now();
-  saveDB(); setStatus('Guardado en ' + fmt(aud.currentTime), true); renderLib();
+function initCanvas(){
+  const pr=window.devicePixelRatio||1;
+  const art=document.getElementById('art');
+  const w=art.offsetWidth,h=art.offsetHeight;
+  canvas.width=w*pr;canvas.height=h*pr;
+  canvas.style.width=w+'px';canvas.style.height=h+'px';
+  wctx=canvas.getContext('2d');
+  wctx.scale(pr,pr);
 }
 
-function renderLib() {
-  const keys = Object.keys(db).filter(k => db[k].dur > 0 || db[k].pos > 2);
-  libEmpty.style.display = keys.length ? 'none' : 'block';
-  libList.querySelectorAll('.lrow').forEach(r => r.remove());
-  keys.sort((a,b) => (db[b].updated||0)-(db[a].updated||0)).forEach(k => {
-    const it = db[k];
-    const pct = it.dur ? Math.min(100, Math.round(it.pos/it.dur*100)) : 0;
-    const d = document.createElement('div');
-    d.className = 'lrow';
-    d.innerHTML = `<div class="lthumb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><div class="linfo"><div class="lname">${it.name.replace(/\.[^/.]+$/,'')}</div><div class="lpos">${fmt(it.pos)} / ${fmt(it.dur)} · ${pct}%</div><div class="lpb"><div class="lpbf" style="width:${pct}%"></div></div></div>`;
-    d.onclick = () => setStatus('Abre el archivo para retomar en ' + fmt(it.pos), false);
+function renderLib(){
+  const keys=Object.keys(db).filter(k=>db[k].dur>0||db[k].pos>2);
+  libEmpty.style.display=keys.length?'none':'block';
+  libList.querySelectorAll('.lrow').forEach(r=>r.remove());
+  keys.sort((a,b)=>(db[b].updated||0)-(db[a].updated||0)).forEach(k=>{
+    const it=db[k];
+    const pct=it.dur?Math.min(100,Math.round(it.pos/it.dur*100)):0;
+    const d=document.createElement('div');
+    d.className='lrow';
+    d.innerHTML=`<div class="lthumb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><div class="linfo"><div class="lname">${it.name.replace(/\.[^/.]+$/,'')}</div><div class="lpos">${fmt(it.pos)} / ${fmt(it.dur)} &nbsp;·&nbsp; ${pct}%</div><div class="lpb"><div class="lpbf" style="width:${pct}%"></div></div></div>`;
+    d.onclick=()=>setStatus('Abre el archivo para retomar en '+fmt(it.pos),false);
     libList.appendChild(d);
   });
 }
 
-fi.addEventListener('change', e => {
-  const f = e.target.files[0]; if (!f) return;
-  key = f.name + '_' + f.size;
-  if (!db[key]) db[key] = {name: f.name, pos: 0, dur: 0, updated: Date.now()};
+function savePos(){
+  if(!key||!aud.duration)return;
+  db[key].pos=aud.currentTime;db[key].dur=aud.duration;db[key].updated=Date.now();
+  saveDB();setStatus('Guardado en '+fmt(aud.currentTime),true);renderLib();
+}
 
-  if (objUrl) URL.revokeObjectURL(objUrl);
-  objUrl = URL.createObjectURL(f);
-  aud.src = objUrl;
-  aud.load();
-  aud.playbackRate = SPEEDS[si];
+aud.addEventListener('timeupdate',()=>{
+  if(seeking)return;
+  ctEl.textContent=fmt(aud.currentTime);
+  if(aud.duration){seekEl.max=Math.floor(aud.duration);seekEl.value=Math.floor(aud.currentTime);}
+  if(!saveT)saveT=setTimeout(()=>{savePos();saveT=null;},5000);
+});
+aud.addEventListener('loadedmetadata',()=>{
+  ttEl.textContent=fmt(aud.duration);seekEl.max=Math.floor(aud.duration);
+  const sp=db[key]&&db[key].pos>2?db[key].pos:0;
+  if(sp){aud.currentTime=sp;setStatus('Retomando desde '+fmt(sp),true);}else setStatus('Listo',true);
+  setTimeout(()=>{initCanvas();cancelAnimationFrame(animId);drawWave();},80);
+});
+aud.addEventListener('play',()=>{playSvg.innerHTML=PAUSE;setStatus('Reproduciendo',true);});
+aud.addEventListener('pause',()=>{playSvg.innerHTML=PLAY;savePos();});
+aud.addEventListener('ended',()=>{playSvg.innerHTML=PLAY;if(key){db[key].pos=0;saveDB();}setStatus('Terminado',false);renderLib();});
 
-  const short = f.name.replace(/\.[^/.]+$/, '');
-  document.getElementById('art-fn').textContent = short;
-  document.getElementById('art-fm').textContent = (f.size/1024/1024).toFixed(1) + ' MB · ' + (f.type.split('/')[1] || 'audio').toUpperCase();
-  document.getElementById('art-idle').style.display = 'none';
-  document.getElementById('art-active').style.display = 'flex';
-  document.getElementById('open-btn').style.display = 'none';
-  document.getElementById('seek-wrap').style.display = 'block';
-  flex('times'); flex('ctrls'); flex('bot-row'); flex('status');
-  setStatus('Cargando...', false);
-  renderLib();
+seekEl.addEventListener('mousedown',()=>seeking=true);
+seekEl.addEventListener('touchstart',()=>seeking=true,{passive:true});
+seekEl.addEventListener('input',()=>{ctEl.textContent=fmt(parseInt(seekEl.value));});
+seekEl.addEventListener('change',()=>{aud.currentTime=parseInt(seekEl.value);seeking=false;savePos();});
+
+document.getElementById('btn-back').addEventListener('click',()=>{aud.currentTime=0;});
+document.getElementById('btn-r30').addEventListener('click',()=>{aud.currentTime=Math.max(0,aud.currentTime-30);savePos();});
+document.getElementById('btn-f30').addEventListener('click',()=>{aud.currentTime=Math.min(aud.duration||0,aud.currentTime+30);savePos();});
+document.getElementById('btn-fwd').addEventListener('click',()=>{aud.currentTime=Math.min(aud.duration||0,aud.currentTime+60);savePos();});
+volEl.addEventListener('input',()=>{aud.volume=parseFloat(volEl.value);});
+
+fi.addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  cancelAnimationFrame(animId);
+  key=f.name+'_'+f.size;
+  if(!db[key])db[key]={name:f.name,pos:0,dur:0,updated:Date.now()};
+  aud.src=URL.createObjectURL(f);aud.load();aud.playbackRate=SPEEDS[si];
+  const short=f.name.replace(/\.[^/.]+$/,'');
+  document.getElementById('info-name').textContent=short;
+  document.getElementById('info-meta').textContent=(f.size/1024/1024).toFixed(1)+' MB · '+(f.type.split('/')[1]||'audio').toUpperCase();
+  document.getElementById('art-fn').textContent=short;
+  document.getElementById('art-fm').textContent=(f.size/1024/1024).toFixed(1)+' MB';
+  document.getElementById('art-idle').style.display='none';
+  document.getElementById('art-overlay').style.display='block';
+  document.getElementById('open-btn').style.display='none';
+  document.getElementById('info').style.display='block';
+  document.getElementById('seek-wrap').style.display='block';
+  document.getElementById('times').style.display='flex';
+  document.getElementById('ctrls').style.display='flex';
+  document.getElementById('bot-row').style.display='flex';
+  document.getElementById('status').style.display='flex';
+  setStatus('Cargando...',false);renderLib();
 });
 
-loadDB();
-renderLib();
+loadDB();renderLib();
 </script>
 </body>
 </html>
